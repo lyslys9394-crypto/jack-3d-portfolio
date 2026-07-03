@@ -1,0 +1,166 @@
+jack-3d-portfolio/
+│
+├── index.html
+├── package.json
+├── vite.config.ts
+├── tailwind.config.js
+├── postcss.config.js
+├── tsconfig.json
+│
+└── src/
+    ├── main.tsx
+    ├── App.tsx
+    ├── index.css
+    │
+    └── components/
+        ├── Hero.tsx
+        ├── About.tsx
+        ├── Services.tsx
+        ├── Projects.tsx
+        ├── Marquee.tsx
+        ├── FadeIn.tsx
+        ├── Magnet.tsx
+        └── ContactButton.tsx{
+  "name": "jack-3d-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^0.344.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0"
+  }
+}
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+});
+export default {
+  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        dark: "#0C0C0C",
+      },
+    },
+  },
+  plugins: [],
+};
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+import Hero from "./components/Hero";
+import Marquee from "./components/Marquee";
+import About from "./components/About";
+import Services from "./components/Services";
+import Projects from "./components/Projects";
+
+export default function App() {
+  return (
+    <main>
+      <Hero />
+      <Marquee />
+      <About />
+      <Services />
+      <Projects />
+    </main>
+  );
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background: #0C0C0C;
+  color: #D7E2EA;
+  overflow-x: hidden;
+  font-family: system-ui;
+}
+import { useRef } from "react";
+
+export default function Magnet({ children }: any) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const move = (e: any) => {
+    const el = ref.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * 0.2;
+    const y = (e.clientY - rect.top - rect.height / 2) * 0.2;
+
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  };
+
+  return (
+    <div ref={ref} onMouseMove={move} className="transition-transform duration-300">
+      {children}
+    </div>
+  );
+}
+import Magnet from "./Magnet";
+import FadeIn from "./FadeIn";
+import ContactButton from "./ContactButton";
+
+export default function Hero() {
+  return (
+    <section className="h-screen flex flex-col justify-between px-6 pt-6 relative">
+
+      <div className="flex justify-between text-sm uppercase">
+        <span>About</span>
+        <span>Price</span>
+        <span>Projects</span>
+        <span>Contact</span>
+      </div>
+
+      <FadeIn>
+        <h1 className="text-[14vw] font-black uppercase leading-none">
+          Hi, I&apos;m Jack
+        </h1>
+      </FadeIn>
+
+      <div className="flex justify-between items-end pb-10">
+        <p className="max-w-[240px] uppercase text-xs opacity-70">
+          3D creator crafting unforgettable visuals
+        </p>
+        <ContactButton />
+      </div>
+
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <Magnet>
+          <img
+            src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
+            className="w-[320px] md:w-[480px]"
+          />
+        </Magnet>
+      </div>
+
+    </section>
+  );
+}
